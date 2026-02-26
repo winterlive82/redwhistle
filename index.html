@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="내부자신고 사전상담 시스템 - AI 사전상담 및 레드휘슬 익명 신고 연동">
+  <meta name="description" content="내부자신고 사전상담 시스템 - AI 상담 및 레드휘슬 익명 신고 연동">
   <title>내부자신고 사전상담 시스템</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -18,7 +18,7 @@
         <div class="logo-icon">🛡️</div>
         <span class="logo-text">내부자신고 상담</span>
       </a>
-      <span class="header-badge">PoC v1.0 · 익명 보장</span>
+      <span class="header-badge">PoC v2.0 · AI 상담 · 익명 보장</span>
     </div>
   </header>
 
@@ -28,12 +28,12 @@
       <div class="hero-icon">🔐</div>
       <h1>내부자신고 사전상담 시스템</h1>
       <p class="hero-subtitle">
-        AI 사전상담으로 신고 해당 여부를 먼저 확인하고,<br>
-        레드휘슬을 통해 완벽한 익명으로 신고할 수 있습니다.
+        AI 상담으로 신고 해당 여부를 확인하고,<br>
+        신고서 초안까지 자동으로 작성해 드립니다.
       </p>
       <div class="anonymity-banner">
         <span class="icon">🔒</span>
-        <span>이 시스템은 서버에 어떠한 데이터도 저장하지 않습니다. 모든 내용은 브라우저 메모리에만 존재하며, 페이지를 닫으면 즉시 폐기됩니다.</span>
+        <span>이 시스템은 서버에 어떠한 대화 로그도 저장하지 않습니다. 모든 대화 내용은 브라우저 메모리에만 존재하며, 페이지를 닫으면 즉시 폐기됩니다.</span>
       </div>
       <div class="anonymity-banner"
         style="margin-top: 12px; background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.25);">
@@ -51,12 +51,12 @@
     <nav class="step-nav" id="stepNav">
       <div class="step-nav-item active" data-step="1" onclick="goToStep(1)">
         <span class="step-num">1</span>
-        <span>AI 사전상담</span>
+        <span>AI 상담</span>
       </div>
       <div class="step-connector">→</div>
       <div class="step-nav-item" data-step="2" onclick="goToStep(2)">
         <span class="step-num">2</span>
-        <span>신고서 준비</span>
+        <span>신고서 생성</span>
       </div>
       <div class="step-connector">→</div>
       <div class="step-nav-item" data-step="3" onclick="goToStep(3)">
@@ -65,187 +65,104 @@
       </div>
     </nav>
 
-    <!-- ===================== STEP 1: AI 사전상담 ===================== -->
+    <!-- ===================== STEP 1: AI 상담 채팅 ===================== -->
     <div class="step-panel active" id="step1">
-      <h2 class="section-title">STEP 1. AI 사전상담 가이드</h2>
+      <h2 class="section-title">STEP 1. AI 사전상담</h2>
       <p class="section-desc">
-        신고하려는 사안이 내부자신고 대상에 해당하는지 AI에게 먼저 상담받을 수 있습니다.<br>
-        아래에서 신고 유형을 선택하면, 두레이 AI에 붙여넣기할 수 있는 <strong>맞춤형 상담 프롬프트</strong>가 생성됩니다.
+        신고하려는 사안에 대해 AI와 상담하세요. 관련 법률과 내부규정을 기반으로<br>
+        신고 대상 여부를 판단하고, 구체적으로 어떤 부분이 문제가 되는지 안내해 드립니다.
       </p>
 
       <div class="warning-box">
         <span class="icon">⚠️</span>
         <div>
-          <strong>익명성 주의사항:</strong> 두레이 AI 상담 시 본인이나 특정인을 식별할 수 있는
-          정보(실명, 부서명, 구체적 일시 등)는 절대 입력하지 마세요.
-          아래 프롬프트는 일반적이고 가상의 시나리오로 구성되어 있습니다.
+          <strong>익명성 주의사항:</strong> 대화 중 본인이나 특정인을 식별할 수 있는
+          정보(실명, 정확한 부서명, 구체적 일시 등)는 입력하지 마세요.
+          AI도 식별 정보를 묻지 않습니다.
         </div>
       </div>
 
-      <!-- Report Type Selection -->
-      <h3 style="font-size: 0.95rem; font-weight: 600; margin-bottom: 16px; color: var(--text-secondary);">
-        📋 어떤 유형에 해당하나요?
-      </h3>
-      <div class="type-grid" id="typeGrid">
-        <div class="type-card" data-type="fraud" onclick="selectType(this)">
-          <span class="type-icon">💰</span>
-          <div class="type-name">금전 부정행위</div>
-          <div class="type-desc">횡령, 배임, 뇌물 수수, 부당이득 등</div>
+      <!-- Chat Container -->
+      <div class="chat-container" id="chatContainer">
+        <div class="chat-messages" id="chatMessages">
+          <!-- Welcome message -->
+          <div class="chat-message ai">
+            <div class="chat-avatar">🤖</div>
+            <div class="chat-bubble">
+              안녕하세요. 내부자신고 사전상담 AI 어시스턴트입니다.<br><br>
+              신고하고 싶은 사안이 있으시면 편하게 말씀해 주세요.
+              관련 법률과 내부규정을 기반으로 신고 대상에 해당하는지 함께 확인해 보겠습니다.<br><br>
+              💡 <em>예시: "거래처 직원이 우리 회사 담당자에게 고가 선물을 보내는 것을 봤어요"</em>
+            </div>
+          </div>
         </div>
-        <div class="type-card" data-type="compliance" onclick="selectType(this)">
-          <span class="type-icon">📜</span>
-          <div class="type-name">법규/규정 위반</div>
-          <div class="type-desc">내규 위반, 법령 위반, 인허가 위반 등</div>
-        </div>
-        <div class="type-card" data-type="security" onclick="selectType(this)">
-          <span class="type-icon">🔓</span>
-          <div class="type-name">정보보안 위반</div>
-          <div class="type-desc">개인정보 유출, 내부정보 외부 반출, 접근권한 남용 등</div>
-        </div>
-        <div class="type-card" data-type="ethics" onclick="selectType(this)">
-          <span class="type-icon">⚖️</span>
-          <div class="type-name">윤리/직장 내 문제</div>
-          <div class="type-desc">직장 내 괴롭힘, 성희롱, 차별, 부당 지시 등</div>
-        </div>
-        <div class="type-card" data-type="safety" onclick="selectType(this)">
-          <span class="type-icon">🏗️</span>
-          <div class="type-name">안전/환경 위반</div>
-          <div class="type-desc">안전규정 위반, 환경법규 위반, 재해 은폐 등</div>
-        </div>
-        <div class="type-card" data-type="other" onclick="selectType(this)">
-          <span class="type-icon">📌</span>
-          <div class="type-name">기타</div>
-          <div class="type-desc">위 유형에 해당하지 않는 기타 부정/비위 행위</div>
-        </div>
-      </div>
 
-      <!-- Generated Prompt -->
-      <div class="prompt-box" id="promptBox" style="display: none;">
-        <div class="prompt-label">🤖 두레이 AI 상담용 프롬프트</div>
-        <div class="prompt-text" id="promptText"></div>
-        <div class="prompt-actions">
-          <button class="btn btn-primary" id="copyBtn" onclick="copyPrompt()">
-            <span class="default">📋 프롬프트 복사</span>
-            <span class="copied">✅ 복사됨!</span>
-          </button>
-          <button class="btn btn-secondary" onclick="goToStep(2)">
-            다음 단계로 →
+        <!-- Typing indicator -->
+        <div class="typing-indicator" id="typingIndicator" style="display: none;">
+          <div class="chat-avatar">🤖</div>
+          <div class="typing-dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="chat-input-area">
+          <textarea class="chat-input" id="chatInput" placeholder="상담 내용을 입력하세요..." rows="1"
+            onkeydown="handleChatKeydown(event)" oninput="autoResizeInput(this)"></textarea>
+          <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()">
+            <span>전송</span>
           </button>
         </div>
       </div>
 
-      <!-- How to use -->
-      <div class="card" style="margin-top: 28px;">
-        <div class="card-header">
-          <div class="card-icon blue">💡</div>
-          <div class="card-title">프롬프트 사용 방법</div>
-        </div>
-        <div class="card-body">
-          <ol class="instructions">
-            <li>
-              <div class="instruction-text">
-                위에서 신고 유형을 선택하고 <strong>"프롬프트 복사"</strong> 버튼을 클릭합니다.
-              </div>
-            </li>
-            <li>
-              <div class="instruction-text">
-                <strong>두레이 메신저</strong>에서 AI 봇과 <strong>1:1 대화방</strong>을 엽니다.
-                <span class="sub">그룹 채널이 아닌 반드시 1:1 대화방을 사용하세요.</span>
-              </div>
-            </li>
-            <li>
-              <div class="instruction-text">
-                복사한 프롬프트를 <strong>붙여넣기(Ctrl+V)</strong>하여 AI에게 상담합니다.
-                <span class="sub">절대 실명, 부서명 등 식별 가능한 정보를 추가 입력하지 마세요.</span>
-              </div>
-            </li>
-            <li>
-              <div class="instruction-text">
-                AI 답변을 참고하여 신고 해당 여부를 판단한 후, <strong>STEP 2</strong>로 이동합니다.
-              </div>
-            </li>
-          </ol>
-        </div>
+      <div style="display: flex; gap: 12px; margin-top: 20px;">
+        <button class="btn btn-success" onclick="requestReport()" id="reportBtn" style="flex: 1;" disabled>
+          📄 대화 내용 기반 신고서 초안 생성
+        </button>
+        <button class="btn btn-secondary" onclick="goToStep(2)">
+          다음 단계 →
+        </button>
       </div>
     </div>
 
-    <!-- ===================== STEP 2: 신고서 준비 ===================== -->
+    <!-- ===================== STEP 2: 신고서 생성 ===================== -->
     <div class="step-panel" id="step2">
-      <h2 class="section-title">STEP 2. 신고서 작성 준비</h2>
+      <h2 class="section-title">STEP 2. 신고서 초안 확인</h2>
       <p class="section-desc">
-        레드휘슬에 제출할 신고서에 포함할 내용을 미리 정리합니다.<br>
-        아래 체크리스트를 활용하여 필요한 정보를 준비하세요.
+        AI 상담 내용을 바탕으로 생성된 신고서 초안입니다.<br>
+        내용을 확인하고 수정한 후, 레드휘슬에 복사하여 제출하세요.
       </p>
 
       <div class="info-box">
-        💡 이 페이지의 모든 입력 내용은 <strong>브라우저 메모리에만</strong> 존재합니다.
+        💡 이 페이지의 모든 내용은 <strong>브라우저 메모리에만</strong> 존재합니다.
         서버 전송, 쿠키 저장, 로컬스토리지 저장이 일체 없으며,
         페이지를 닫거나 "데이터 폐기" 버튼을 클릭하면 즉시 삭제됩니다.
       </div>
 
-      <!-- Checklist -->
-      <div class="card">
+      <!-- Report Display -->
+      <div class="card" id="reportCard">
         <div class="card-header">
-          <div class="card-icon amber">✅</div>
-          <div class="card-title">신고서 필수 요소 체크리스트</div>
+          <div class="card-icon purple">📄</div>
+          <div class="card-title">레드휘슬 신고서 초안</div>
         </div>
         <div class="card-body">
-          <ul class="checklist" id="checklist">
-            <li class="checklist-item" onclick="toggleCheck(this)">
-              <div class="checklist-checkbox">✓</div>
-              <div>
-                <div class="checklist-label">사건의 개요</div>
-                <div class="checklist-hint">어떤 유형의 부정/위반 행위인지 간략히 정리</div>
-              </div>
-            </li>
-            <li class="checklist-item" onclick="toggleCheck(this)">
-              <div class="checklist-checkbox">✓</div>
-              <div>
-                <div class="checklist-label">발생 시기</div>
-                <div class="checklist-hint">대략적인 시기 (특정 날짜 대신 "2026년 1분기경" 등으로 기재 가능)</div>
-              </div>
-            </li>
-            <li class="checklist-item" onclick="toggleCheck(this)">
-              <div class="checklist-checkbox">✓</div>
-              <div>
-                <div class="checklist-label">관련 정황 또는 증거</div>
-                <div class="checklist-hint">목격 정황, 관련 문서 등 (파일 첨부는 레드휘슬에서 가능)</div>
-              </div>
-            </li>
-            <li class="checklist-item" onclick="toggleCheck(this)">
-              <div class="checklist-checkbox">✓</div>
-              <div>
-                <div class="checklist-label">인지 경위</div>
-                <div class="checklist-hint">해당 행위를 어떻게 알게 되었는지 (본인 식별 불가한 수준으로)</div>
-              </div>
-            </li>
-            <li class="checklist-item" onclick="toggleCheck(this)">
-              <div class="checklist-checkbox">✓</div>
-              <div>
-                <div class="checklist-label">피해 규모 (해당 시)</div>
-                <div class="checklist-hint">금전적 피해액, 영향 범위 등 추정치</div>
-              </div>
-            </li>
-            <li class="checklist-item" onclick="toggleCheck(this)">
-              <div class="checklist-checkbox">✓</div>
-              <div>
-                <div class="checklist-label">기타 참고사항</div>
-                <div class="checklist-hint">추가적으로 전달할 사항</div>
-              </div>
-            </li>
-          </ul>
+          <div class="report-content" id="reportContent">
+            <p style="color: var(--text-muted); text-align: center; padding: 40px 0;">
+              STEP 1에서 AI 상담을 진행한 후<br>"신고서 초안 생성" 버튼을 클릭하면<br>이곳에 신고서가 표시됩니다.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Notes -->
-      <div class="card">
+      <!-- Editable report area -->
+      <div class="card" id="editCard" style="display: none;">
         <div class="card-header">
-          <div class="card-icon green">📝</div>
-          <div class="card-title">메모 작성 (선택사항)</div>
+          <div class="card-icon green">✏️</div>
+          <div class="card-title">신고서 수정 (선택사항)</div>
         </div>
         <div class="card-body">
-          <textarea class="notes-area" id="notesArea"
-            placeholder="레드휘슬에 제출할 신고서 초안을 여기에 미리 작성할 수 있습니다.&#10;&#10;이 내용은 브라우저 메모리에만 존재하며, 어디에도 전송되지 않습니다.&#10;작성 후 레드휘슬 사이트에 복사하여 붙여넣기 하세요."></textarea>
+          <textarea class="notes-area" id="reportEditArea" placeholder="위 초안을 수정하려면 여기에 내용을 편집하세요."
+            style="min-height: 300px;"></textarea>
           <div class="notes-warning">
             <span>⚠️</span>
             <span>이 메모는 서버에 저장되지 않습니다. 페이지를 닫으면 영구 삭제됩니다.</span>
@@ -253,10 +170,14 @@
         </div>
       </div>
 
-      <div style="display: flex; gap: 12px; margin-top: 24px;">
-        <button class="btn btn-secondary" onclick="goToStep(1)">← 이전 단계</button>
-        <button class="btn btn-primary" onclick="goToStep(3)" style="flex: 1;">
-          레드휘슬 신고 안내로 이동 →
+      <div class="prompt-actions" style="margin-top: 20px;">
+        <button class="btn btn-primary" id="copyReportBtn" onclick="copyReport()" style="display: none;">
+          <span class="default">📋 신고서 복사</span>
+          <span class="copied">✅ 복사됨!</span>
+        </button>
+        <button class="btn btn-secondary" onclick="goToStep(1)">← AI 상담으로</button>
+        <button class="btn btn-success" onclick="goToStep(3)">
+          레드휘슬 신고 안내 →
         </button>
       </div>
     </div>
@@ -269,21 +190,20 @@
         레드휘슬은 독립된 제3자 운영 시스템으로, <strong>기술적 익명성이 완벽히 보장</strong>됩니다.
       </p>
 
-      <!-- RedWhistle Introduction -->
+      <!-- RedWhistle Card -->
       <div class="redwhistle-card">
         <div class="rw-logo">🚨</div>
         <h3>레드휘슬 헬프라인</h3>
         <p>
           레드휘슬은 외부 독립기관이 운영하는 익명 신고 플랫폼입니다.<br>
-          신고자의 신원은 기술적으로 보호되며, 로그인 없이 신고가 가능합니다.
+          STEP 2에서 복사한 신고서 초안을 붙여넣기하여 제출하세요.
         </p>
-        <a href="https://www.redwhistle.org/main/" target="_blank" rel="noopener" class="redwhistle-link"
-          id="redwhistleLink">
+        <a href="https://www.redwhistle.org/main/" target="_blank" rel="noopener" class="redwhistle-link">
           🔗 레드휘슬 사이트로 이동
         </a>
       </div>
 
-      <!-- Step-by-step guide -->
+      <!-- Guide -->
       <div class="card">
         <div class="card-header">
           <div class="card-icon purple">📖</div>
@@ -292,33 +212,25 @@
         <div class="card-body">
           <ol class="instructions">
             <li>
-              <div class="instruction-text">
-                레드휘슬 사이트에 접속하여 <strong>신고 유형을 선택</strong>합니다.
-              </div>
+              <div class="instruction-text">레드휘슬 사이트에 접속하여 <strong>신고 유형을 선택</strong>합니다.</div>
             </li>
             <li>
-              <div class="instruction-text">
-                STEP 2에서 준비한 내용을 참고하여 <strong>신고서를 작성</strong>합니다.
-                <span class="sub">필요 시 관련 파일을 첨부할 수 있습니다.</span>
-              </div>
+              <div class="instruction-text">STEP 2에서 복사한 <strong>신고서 초안을 붙여넣기</strong>합니다.<span class="sub">필요 시 관련 파일을
+                  첨부할 수 있습니다.</span></div>
             </li>
             <li>
-              <div class="instruction-text">
-                <strong>비밀번호를 설정</strong>한 후 신고서를 제출합니다.
-                <span class="sub">⚠️ 비밀번호와 발급받은 고유번호를 반드시 메모하세요!</span>
-              </div>
+              <div class="instruction-text"><strong>비밀번호를 설정</strong>한 후 신고서를 제출합니다.<span class="sub">⚠️ 비밀번호와 발급받은
+                  고유번호를 반드시 메모하세요!</span></div>
             </li>
             <li>
-              <div class="instruction-text">
-                신고서 제출 <strong>약 7일 후</strong> 레드휘슬 시스템에서 처리 결과를 확인합니다.
-                <span class="sub">담당자가 추가 정보를 요청할 수 있으니 정기적으로 확인해 주세요.</span>
-              </div>
+              <div class="instruction-text">신고서 제출 <strong>약 7일 후</strong> 레드휘슬 시스템에서 처리 결과를 확인합니다.<span
+                  class="sub">담당자가 추가 정보를 요청할 수 있으니 정기적으로 확인해 주세요.</span></div>
             </li>
           </ol>
         </div>
       </div>
 
-      <!-- Important Notes -->
+      <!-- Whistleblower protection -->
       <div class="card">
         <div class="card-header">
           <div class="card-icon red">🔒</div>
@@ -326,22 +238,14 @@
         </div>
         <div class="card-body">
           <ul style="list-style: none; display: flex; flex-direction: column; gap: 12px;">
+            <li style="display: flex; align-items: flex-start; gap: 10px;"><span>✅</span><span>레드휘슬은 <strong>외부
+                  독립기관</strong>이 운영하며, 회사가 신고자를 특정할 수 없습니다.</span></li>
             <li style="display: flex; align-items: flex-start; gap: 10px;">
-              <span>✅</span>
-              <span>레드휘슬은 <strong>외부 독립기관</strong>이 운영하며, 회사가 신고자를 특정할 수 없습니다.</span>
-            </li>
-            <li style="display: flex; align-items: flex-start; gap: 10px;">
-              <span>✅</span>
-              <span><strong>공익신고자보호법</strong>에 의해 신고자는 법적으로 보호받습니다.</span>
-            </li>
-            <li style="display: flex; align-items: flex-start; gap: 10px;">
-              <span>✅</span>
-              <span>신고를 이유로 한 <strong>불이익 조치(해고, 징계, 차별 등)는 법률로 금지</strong>되어 있습니다.</span>
-            </li>
-            <li style="display: flex; align-items: flex-start; gap: 10px;">
-              <span>✅</span>
-              <span>이 사전상담 시스템의 데이터는 서버에 저장되지 않으며, <strong>아래 버튼으로 즉시 폐기</strong>할 수 있습니다.</span>
-            </li>
+              <span>✅</span><span><strong>공익신고자보호법</strong>에 의해 신고자는 법적으로 보호받습니다.</span></li>
+            <li style="display: flex; align-items: flex-start; gap: 10px;"><span>✅</span><span>신고를 이유로 한 <strong>불이익
+                  조치(해고, 징계, 차별 등)는 법률로 금지</strong>되어 있습니다.</span></li>
+            <li style="display: flex; align-items: flex-start; gap: 10px;"><span>✅</span><span>이 사전상담 시스템의 AI 대화 로그는 서버에
+                저장되지 않으며, <strong>아래 버튼으로 즉시 폐기</strong>할 수 있습니다.</span></li>
           </ul>
         </div>
       </div>
@@ -355,7 +259,7 @@
         <h3>🗑️ 세션 데이터 완전 폐기</h3>
         <p>
           신고가 완료되었거나 더 이상 이 페이지가 필요 없다면,<br>
-          아래 버튼을 클릭하여 브라우저 메모리의 모든 데이터를 즉시 삭제하세요.
+          아래 버튼을 클릭하여 모든 대화 내용과 신고서를 즉시 삭제하세요.
         </p>
         <button class="btn btn-danger btn-lg" onclick="destroyAllData()">
           🔥 모든 데이터 즉시 폐기
@@ -368,12 +272,12 @@
   <footer class="app-footer">
     <div class="app-container">
       <div class="security-badges">
-        <span class="security-badge">🔒 서버 미저장</span>
+        <span class="security-badge">🔒 대화 로그 미저장</span>
         <span class="security-badge">🚫 쿠키 미사용</span>
         <span class="security-badge">🛡️ 익명성 보장</span>
         <span class="security-badge">💨 세션 종료 시 자동 폐기</span>
       </div>
-      <p>내부자신고 사전상담 시스템 PoC · 이 시스템은 어떠한 사용자 데이터도 수집하거나 저장하지 않습니다.</p>
+      <p>내부자신고 사전상담 시스템 PoC v2.0 · AI 상담 내용은 서버에 저장되지 않습니다.</p>
     </div>
   </footer>
 
