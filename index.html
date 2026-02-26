@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <title>내부자신고 사전상담 시스템</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
   <!-- Header -->
@@ -32,6 +34,14 @@
       <div class="anonymity-banner">
         <span class="icon">🔒</span>
         <span>이 시스템은 서버에 어떠한 데이터도 저장하지 않습니다. 모든 내용은 브라우저 메모리에만 존재하며, 페이지를 닫으면 즉시 폐기됩니다.</span>
+      </div>
+      <div class="anonymity-banner"
+        style="margin-top: 12px; background: rgba(245, 158, 11, 0.08); border-color: rgba(245, 158, 11, 0.25);">
+        <span class="icon">📱</span>
+        <span style="color: var(--accent-amber-light);">
+          <strong>익명성 극대화를 위해 개인 기기(스마트폰, 개인 PC 등)에서 접속하시기를 권장합니다.</strong><br>
+          회사 네트워크(Wi-Fi, 유선망)가 아닌 개인 모바일 데이터(LTE/5G) 사용 시 접속 기록이 회사에 남지 않습니다.
+        </span>
       </div>
     </div>
   </section>
@@ -234,11 +244,8 @@
           <div class="card-title">메모 작성 (선택사항)</div>
         </div>
         <div class="card-body">
-          <textarea
-            class="notes-area"
-            id="notesArea"
-            placeholder="레드휘슬에 제출할 신고서 초안을 여기에 미리 작성할 수 있습니다.&#10;&#10;이 내용은 브라우저 메모리에만 존재하며, 어디에도 전송되지 않습니다.&#10;작성 후 레드휘슬 사이트에 복사하여 붙여넣기 하세요."
-          ></textarea>
+          <textarea class="notes-area" id="notesArea"
+            placeholder="레드휘슬에 제출할 신고서 초안을 여기에 미리 작성할 수 있습니다.&#10;&#10;이 내용은 브라우저 메모리에만 존재하며, 어디에도 전송되지 않습니다.&#10;작성 후 레드휘슬 사이트에 복사하여 붙여넣기 하세요."></textarea>
           <div class="notes-warning">
             <span>⚠️</span>
             <span>이 메모는 서버에 저장되지 않습니다. 페이지를 닫으면 영구 삭제됩니다.</span>
@@ -270,7 +277,8 @@
           레드휘슬은 외부 독립기관이 운영하는 익명 신고 플랫폼입니다.<br>
           신고자의 신원은 기술적으로 보호되며, 로그인 없이 신고가 가능합니다.
         </p>
-        <a href="https://www.redwhistle.org/main/" target="_blank" rel="noopener" class="redwhistle-link" id="redwhistleLink">
+        <a href="https://www.redwhistle.org/main/" target="_blank" rel="noopener" class="redwhistle-link"
+          id="redwhistleLink">
           🔗 레드휘슬 사이트로 이동
         </a>
       </div>
@@ -374,4 +382,5 @@
 
   <script src="app.js"></script>
 </body>
+
 </html>
